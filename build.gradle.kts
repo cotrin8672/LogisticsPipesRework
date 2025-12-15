@@ -5,7 +5,7 @@ plugins {
     idea
     `java-library`
     kotlin("jvm") version "2.1.0"
-    id("net.neoforged.moddev") version "2.0.95"
+    id("net.neoforged.moddev") version "2.0.107"
     id("com.hypherionmc.modutils.modpublisher") version "2.1.6"
 }
 
@@ -54,7 +54,13 @@ neoForge {
         create("data") {
             data()
             programArguments.addAll(
-                "--mod", modId, "--all", "--output", file("src/generated/resources/").absolutePath, "--existing", file("src/main/resources/").absolutePath
+                "--mod",
+                modId,
+                "--all",
+                "--output",
+                file("src/generated/resources/").absolutePath,
+                "--existing",
+                file("src/main/resources/").absolutePath
             )
         }
 
@@ -93,7 +99,7 @@ repositories {
 dependencies {
     val kotlinForForgeVersion = "5.10.0"
     val flywheelVersion = "1.0.5"
-    val registrateVersion = "MC1.21-1.3.0+62"
+    val registrateVersion = "MC1.21-1.3.0+66"
     val kotlinCoroutine = "1.10.2"
 
     implementation("thedarkcolour:kotlinforforge-neoforge:$kotlinForForgeVersion")
@@ -161,9 +167,9 @@ tasks.withType<ProcessResources>().configureEach {
     )
 
     inputs.properties(replaceProperties)
-    expand(replaceProperties)
-    from("src/main/templates")
-    into("build/generated/sources/modMetadata")
+    filesMatching(listOf("META-INF/neoforge.mods.toml")) {
+        expand(replaceProperties)
+    }
 }
 
 sourceSets.main.get().resources.srcDir("src/generated/resources")
@@ -175,6 +181,10 @@ tasks.named<Wrapper>("wrapper").configure {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+}
+
+tasks.withType<ProcessResources> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 idea {
