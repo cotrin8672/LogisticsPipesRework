@@ -1,7 +1,160 @@
 {
-  "variants": {
-    "": {
-      "model": "logisticspipesrework:block/basic_pipe"
+  "multipart": [
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_nu"
+      },
+      "when": {
+        "north": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_ne"
+      },
+      "when": {
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_eu"
+      },
+      "when": {
+        "east": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_nd"
+      },
+      "when": {
+        "down": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_nw"
+      },
+      "when": {
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_ed"
+      },
+      "when": {
+        "down": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_sd"
+      },
+      "when": {
+        "down": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_se"
+      },
+      "when": {
+        "east": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_su"
+      },
+      "when": {
+        "south": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_sw"
+      },
+      "when": {
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_wd"
+      },
+      "when": {
+        "down": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/pipe_edge_wu"
+      },
+      "when": {
+        "up": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/north"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/east"
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/south"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/west"
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/up"
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "logisticspipesrework:block/pipe/connector/down"
+      },
+      "when": {
+        "down": "true"
+      }
     }
-  }
+  ]
 }

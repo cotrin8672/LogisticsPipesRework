@@ -5,7 +5,7 @@ plugins {
     idea
     `java-library`
     kotlin("jvm") version "2.1.0"
-    id("net.neoforged.moddev") version "2.0.107"
+    id("net.neoforged.moddev") version "2.0.124"
     id("com.hypherionmc.modutils.modpublisher") version "2.1.6"
 }
 
