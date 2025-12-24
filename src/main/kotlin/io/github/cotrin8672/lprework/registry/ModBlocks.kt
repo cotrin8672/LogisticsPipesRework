@@ -43,15 +43,219 @@ object ModBlocks {
             val connectorU = LogisticsPipesRework.of("block/pipe/connector/up")
             val connectorD = LogisticsPipesRework.of("block/pipe/connector/down")
 
-            val corner0 = LogisticsPipesRework.of("block/pipe/corner/0")
+            // Corner models for 1 connection
+            val corner1NWU2N = LogisticsPipesRework.of("block/pipe/corner/1/nwu2n")
+            val corner1NWU2U = LogisticsPipesRework.of("block/pipe/corner/1/nwu2u")
+            val corner1NWD2N = LogisticsPipesRework.of("block/pipe/corner/1/nwd2n")
+            val corner1NEU2N = LogisticsPipesRework.of("block/pipe/corner/1/neu2n")
+            val corner1NED2N = LogisticsPipesRework.of("block/pipe/corner/1/ned2n")
+            val corner1SWU2U = LogisticsPipesRework.of("block/pipe/corner/1/swu2u")
+            val corner1SEU2U = LogisticsPipesRework.of("block/pipe/corner/1/seu2u")
+            val corner1NEU2U = LogisticsPipesRework.of("block/pipe/corner/1/neu2u")
+            val corner1NWU2W = LogisticsPipesRework.of("block/pipe/corner/1/nwu2w")
+            val corner1NWD2W = LogisticsPipesRework.of("block/pipe/corner/1/nwd2w")
+            val corner1SWD2W = LogisticsPipesRework.of("block/pipe/corner/1/swd2w")
+            val corner1SWU2W = LogisticsPipesRework.of("block/pipe/corner/1/swu2w")
+
+            val cornerNED = LogisticsPipesRework.of("block/pipe/corner/0/ned")
+            val cornerNEU = LogisticsPipesRework.of("block/pipe/corner/0/neu")
+            val cornerNWD = LogisticsPipesRework.of("block/pipe/corner/0/nwd")
+            val cornerNWU = LogisticsPipesRework.of("block/pipe/corner/0/nwu")
+            val cornerSED = LogisticsPipesRework.of("block/pipe/corner/0/sed")
+            val cornerSEU = LogisticsPipesRework.of("block/pipe/corner/0/seu")
+            val cornerSWD = LogisticsPipesRework.of("block/pipe/corner/0/swd")
+            val cornerSWU = LogisticsPipesRework.of("block/pipe/corner/0/swu")
+
+            val corner2SEU = LogisticsPipesRework.of("block/pipe/corner/2/seu")
 
             val b = p.getMultipartBuilder(c.get())
 
             b
                 .part()
-                .modelFile(p.models().getExistingFile(corner0))
+                .modelFile(p.models().getExistingFile(corner1SWD2W))
+                .addModel()
+                .condition(S, false)
+                .condition(W, true)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1SWU2W))
+                .addModel()
+                .condition(S, false)
+                .condition(W, true)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NWU2N))
+                .addModel()
+                .condition(N, true)
+                .condition(W, false)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NWU2W))
                 .addModel()
                 .condition(N, false)
+                .condition(W, true)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NWU2U))
+                .addModel()
+                .condition(N, false)
+                .condition(W, false)
+                .condition(U, true)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1SWU2U))
+                .addModel()
+                .condition(S, false)
+                .condition(W, false)
+                .condition(U, true)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1SEU2U))
+                .addModel()
+                .condition(S, false)
+                .condition(E, false)
+                .condition(U, true)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NWD2N))
+                .addModel()
+                .condition(N, true)
+                .condition(W, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NWD2W))
+                .addModel()
+                .condition(N, false)
+                .condition(W, true)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NEU2N))
+                .addModel()
+                .condition(N, true)
+                .condition(E, false)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NED2N))
+                .addModel()
+                .condition(N, true)
+                .condition(E, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner1NEU2U))
+                .addModel()
+                .condition(N, false)
+                .condition(E, false)
+                .condition(U, true)
+                .end()
+
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner2SEU))
+                .addModel()
+                .condition(S, true)
+                .condition(E, true)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerNED))
+                .addModel()
+                .condition(N, false)
+                .condition(E, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerNEU))
+                .addModel()
+                .condition(N, false)
+                .condition(E, false)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerNWD))
+                .addModel()
+                .condition(N, false)
+                .condition(W, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerNWU))
+                .addModel()
+                .condition(N, false)
+                .condition(W, false)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerSED))
+                .addModel()
+                .condition(S, false)
+                .condition(E, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerSEU))
+                .addModel()
+                .condition(S, false)
+                .condition(E, false)
+                .condition(U, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerSWD))
+                .addModel()
+                .condition(S, false)
+                .condition(W, false)
+                .condition(D, false)
+                .end()
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(cornerSWU))
+                .addModel()
+                .condition(S, false)
                 .condition(W, false)
                 .condition(U, false)
                 .end()
