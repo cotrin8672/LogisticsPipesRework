@@ -2,6 +2,16 @@
   "multipart": [
     {
       "apply": {
+        "model": "logisticspipesrework:block/pipe/corner/0"
+      },
+      "when": {
+        "north": "false",
+        "up": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
         "model": "logisticspipesrework:block/pipe/pipe_edge_nu"
       },
       "when": {

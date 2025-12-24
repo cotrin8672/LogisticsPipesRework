@@ -43,7 +43,18 @@ object ModBlocks {
             val connectorU = LogisticsPipesRework.of("block/pipe/connector/up")
             val connectorD = LogisticsPipesRework.of("block/pipe/connector/down")
 
+            val corner0 = LogisticsPipesRework.of("block/pipe/corner/0")
+
             val b = p.getMultipartBuilder(c.get())
+
+            b
+                .part()
+                .modelFile(p.models().getExistingFile(corner0))
+                .addModel()
+                .condition(N, false)
+                .condition(W, false)
+                .condition(U, false)
+                .end()
 
             b
                 .part()
