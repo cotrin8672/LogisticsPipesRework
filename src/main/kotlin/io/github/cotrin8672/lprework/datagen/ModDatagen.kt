@@ -21,7 +21,7 @@ object ModDatagen {
         override fun registerStatesAndModels() {
             simpleBlock(
                 ModBlocks.BASIC_PIPE.get(),
-                models().getExistingFile(LogisticsPipesRework.of("block/basic_pipe"))
+                models().getExistingFile(LogisticsPipesRework.asResource("block/basic_pipe"))
             )
         }
     }

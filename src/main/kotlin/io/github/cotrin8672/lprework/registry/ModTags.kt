@@ -8,6 +8,6 @@ import net.minecraft.world.level.block.Block
 object ModTags {
     val PIPE_BLOCK: TagKey<Block> = TagKey.create(
         Registries.BLOCK,
-        LogisticsPipesRework.of("pipe_block")
+        LogisticsPipesRework.asResource("pipe_block")
     )
 }

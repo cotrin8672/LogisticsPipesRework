@@ -1,6 +1,7 @@
 package io.github.cotrin8672.lprework
 
 import com.tterrag.registrate.Registrate
+import io.github.cotrin8672.lprework.registry.ModBlockEntityTypes
 import io.github.cotrin8672.lprework.registry.ModBlocks
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.fml.common.Mod
@@ -13,9 +14,10 @@ object LogisticsPipesRework {
 
     init {
         ModBlocks.register()
+        ModBlockEntityTypes.register()
     }
 
-    fun of(id: String): ResourceLocation {
+    fun asResource(id: String): ResourceLocation {
         return ResourceLocation.fromNamespaceAndPath(ID, id)
     }
 
