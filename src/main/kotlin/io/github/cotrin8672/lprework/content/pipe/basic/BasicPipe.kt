@@ -1,12 +1,16 @@
 package io.github.cotrin8672.lprework.content.pipe.basic
 
+import io.github.cotrin8672.lprework.registry.ModBlockEntityTypes
 import io.github.cotrin8672.lprework.registry.ModTags
+import io.github.cotrin8672.lprework.util.orIf
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
@@ -14,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class BasicPipe(properties: Properties) : Block(properties) {
+class BasicPipe(properties: Properties) : Block(properties), EntityBlock {
     companion object {
         val UP: BooleanProperty = BooleanProperty.create("up")
         val DOWN: BooleanProperty = BooleanProperty.create("down")
@@ -24,7 +28,25 @@ class BasicPipe(properties: Properties) : Block(properties) {
         val WEST: BooleanProperty = BooleanProperty.create("west")
         val WATERLOGGED: BooleanProperty = BlockStateProperties.WATERLOGGED
 
+        fun getPropByDirection(direction: Direction): BooleanProperty {
+            return when (direction) {
+                Direction.DOWN -> DOWN
+                Direction.UP -> UP
+                Direction.NORTH -> NORTH
+                Direction.SOUTH -> SOUTH
+                Direction.WEST -> WEST
+                Direction.EAST -> EAST
+            }
+        }
+
         private val CENTER_SHAPE: VoxelShape = box(3.0, 3.0, 3.0, 13.0, 13.0, 13.0)
+        private val NORTH_SHAPE: VoxelShape = box(3.0, 3.0, 0.0, 13.0, 13.0, 13.0)
+        private val EAST_SHAPE: VoxelShape = box(13.0, 3.0, 3.0, 16.0, 13.0, 13.0)
+        private val SOUTH_SHAPE: VoxelShape = box(3.0, 3.0, 13.0, 13.0, 13.0, 16.0)
+        private val WEST_SHAPE: VoxelShape = box(0.0, 3.0, 3.0, 3.0, 13.0, 13.0)
+        private val UP_SHAPE: VoxelShape = box(3.0, 13.0, 3.0, 13.0, 16.0, 13.0)
+        private val DOWN_SHAPE: VoxelShape = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0)
+
     }
 
     init {
@@ -83,6 +105,12 @@ class BasicPipe(properties: Properties) : Block(properties) {
         pos: BlockPos,
         context: CollisionContext,
     ): VoxelShape = CENTER_SHAPE
+        .orIf(NORTH_SHAPE, state.getValue(NORTH))
+        .orIf(EAST_SHAPE, state.getValue(EAST))
+        .orIf(SOUTH_SHAPE, state.getValue(SOUTH))
+        .orIf(WEST_SHAPE, state.getValue(WEST))
+        .orIf(UP_SHAPE, state.getValue(UP))
+        .orIf(DOWN_SHAPE, state.getValue(DOWN))
 
     override fun getCollisionShape(
         state: BlockState,
@@ -90,5 +118,17 @@ class BasicPipe(properties: Properties) : Block(properties) {
         pos: BlockPos,
         context: CollisionContext,
     ): VoxelShape = CENTER_SHAPE
+        .orIf(NORTH_SHAPE, state.getValue(NORTH))
+        .orIf(EAST_SHAPE, state.getValue(EAST))
+        .orIf(SOUTH_SHAPE, state.getValue(SOUTH))
+        .orIf(WEST_SHAPE, state.getValue(WEST))
+        .orIf(UP_SHAPE, state.getValue(UP))
+        .orIf(DOWN_SHAPE, state.getValue(DOWN))
 
+    override fun newBlockEntity(
+        pos: BlockPos,
+        state: BlockState,
+    ): BlockEntity {
+        return ModBlockEntityTypes.BASIC_PIPE.create(pos, state)
+    }
 }
