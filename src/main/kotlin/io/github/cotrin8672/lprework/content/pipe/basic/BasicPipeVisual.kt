@@ -33,6 +33,7 @@ class BasicPipeVisual(
         val udlist = arrayListOf(Direction.UP, Direction.DOWN)
 
         for (ns in nslist) for (ew in ewlist) for (ud in udlist) {
+            // if (ns != Direction.NORTH || ew != Direction.EAST || ud != Direction.UP) continue
             val instance = createCornerInstance(ns, ew, ud)
             instance.setChanged()
             instanceList.add(instance)
@@ -87,9 +88,9 @@ class BasicPipeVisual(
     }
 
     private fun createCornerInstance(ns: Direction, ew: Direction, ud: Direction): OrientedInstance {
-        val cns = blockState.getValue(BasicPipe.getPropByDirection(ns))
-        val cew = blockState.getValue(BasicPipe.getPropByDirection(ew))
-        val cud = blockState.getValue(BasicPipe.getPropByDirection(ud))
+        val cns = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ns))
+        val cew = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ew))
+        val cud = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ud))
 
         val count = (if (cns) 1 else 0) + (if (cew) 1 else 0) + (if (cud) 1 else 0)
         val instance = when (count) {
@@ -108,6 +109,86 @@ class BasicPipeVisual(
         val rotX = if (ud == Direction.UP) 0f else 180f
 
         instance.position(visualPosition)
+
+        if (count == 1) {
+            if (cud) {
+                if (ud == Direction.UP) {
+                    if (ns == Direction.NORTH) {
+                        if (ew == Direction.EAST) {
+                            instance.rotateDegrees(-90f, Direction.Axis.X)
+                            instance.translatePosition(0f, 0.5f, 0f)
+                        } else {
+                            instance.rotateDegrees(90f, Direction.Axis.Z)
+                            instance.translatePosition(0f, 0.5f, 0f)
+                        }
+                    } else if (ns == Direction.SOUTH) {
+                        if (ew == Direction.EAST) {
+                            instance.rotateDegrees(-90f, Direction.Axis.Z)
+                            instance.translatePosition(0f, 0.5f, 0f)
+                        } else {
+                            instance.rotateDegrees(90f, Direction.Axis.X)
+                            instance.translatePosition(0f, 0.5f, 0f)
+                        }
+                    }
+                } else {
+                    if (ns == Direction.NORTH) {
+                        if (ew == Direction.EAST) {
+                            instance.rotateDegrees(90f, Direction.Axis.Z)
+                            instance.translatePosition(0f, -0.5f, 0f)
+                        } else {
+                            instance.rotateDegrees(90f, Direction.Axis.X)
+                            instance.translatePosition(0f, -0.5f, 0f)
+                        }
+                    } else if (ns == Direction.SOUTH) {
+                        if (ew == Direction.EAST) {
+                            instance.rotateDegrees(-90f, Direction.Axis.X)
+                            instance.translatePosition(0f, -0.5f, 0f)
+                        } else {
+                            instance.rotateDegrees(-90f, Direction.Axis.Z)
+                            instance.translatePosition(0f, -0.5f, 0f)
+                        }
+                    }
+                }
+            } else if (cns) {
+                if (ns == Direction.NORTH) {
+                    if (ew == Direction.EAST && ud == Direction.DOWN) {
+                        instance.rotateDegrees(-90f, Direction.Axis.Y)
+                        instance.translatePosition(0f, 0f, -0.5f)
+                    } else if (ew == Direction.WEST && ud == Direction.UP) {
+                        instance.rotateDegrees(90f, Direction.Axis.Y)
+                        instance.translatePosition(0f, 0f, -0.5f)
+                    }
+
+                } else {
+                    if (ew == Direction.EAST && ud == Direction.UP) {
+                        instance.rotateDegrees(90f, Direction.Axis.Y)
+                        instance.translatePosition(0f, 0f, 0.5f)
+                    } else if (ew == Direction.WEST && ud == Direction.DOWN) {
+                        instance.rotateDegrees(-90f, Direction.Axis.Y)
+                        instance.translatePosition(0f, 0f, 0.5f)
+                    }
+                }
+            } else if (cew) {
+                if (ew == Direction.EAST) {
+                    if (ns == Direction.NORTH && ud == Direction.UP) {
+                        instance.rotateDegrees(90f, Direction.Axis.Y)
+                        instance.translatePosition(0.5f, 0f, 0f)
+                    } else if (ns == Direction.SOUTH && ud == Direction.DOWN) {
+                        instance.rotateDegrees(-90f, Direction.Axis.Y)
+                        instance.translatePosition(0.5f, 0f, 0f)
+                    }
+                } else {
+                    if (ns == Direction.NORTH && ud == Direction.DOWN) {
+                        instance.rotateDegrees(-90f, Direction.Axis.Y)
+                        instance.translatePosition(-0.5f, 0f, 0f)
+                    } else if (ns == Direction.SOUTH && ud == Direction.UP) {
+                        instance.rotateDegrees(90f, Direction.Axis.Y)
+                        instance.translatePosition(-0.5f, 0f, 0f)
+                    }
+                }
+            }
+        }
+
         instance.rotateYDegrees(-rotY)
         instance.rotateXDegrees(rotX)
         return instance
