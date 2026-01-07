@@ -4,12 +4,12 @@
   "transform": {
     "origin": "center",
     "translation": [
-      -1.5,
+      0.5,
       0,
       0.5
     ],
     "rotation": {
-      "y": 270
+      "y": 0
     },
     "scale": [
       1.0,
