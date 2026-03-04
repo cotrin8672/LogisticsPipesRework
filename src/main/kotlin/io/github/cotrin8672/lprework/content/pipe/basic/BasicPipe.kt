@@ -40,7 +40,7 @@ class BasicPipe(properties: Properties) : Block(properties), EntityBlock {
         }
 
         private val CENTER_SHAPE: VoxelShape = box(3.0, 3.0, 3.0, 13.0, 13.0, 13.0)
-        private val NORTH_SHAPE: VoxelShape = box(3.0, 3.0, 0.0, 13.0, 13.0, 13.0)
+        private val NORTH_SHAPE: VoxelShape = box(3.0, 3.0, 0.0, 13.0, 13.0, 3.0)
         private val EAST_SHAPE: VoxelShape = box(13.0, 3.0, 3.0, 16.0, 13.0, 13.0)
         private val SOUTH_SHAPE: VoxelShape = box(3.0, 3.0, 13.0, 13.0, 13.0, 16.0)
         private val WEST_SHAPE: VoxelShape = box(0.0, 3.0, 3.0, 3.0, 13.0, 13.0)
@@ -63,11 +63,21 @@ class BasicPipe(properties: Properties) : Block(properties), EntityBlock {
         )
     }
 
+    override fun getShadeBrightness(
+        state: BlockState,
+        level: BlockGetter,
+        pos: BlockPos,
+    ): Float = 1.0f
+
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>) {
         super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, WATERLOGGED))
     }
 
-    override fun getStateForPlacement(context: BlockPlaceContext): BlockState? {
+    override fun useShapeForLightOcclusion(state: BlockState): Boolean {
+        return true
+    }
+
+    override fun getStateForPlacement(context: BlockPlaceContext): BlockState {
         val state = super.getStateForPlacement(context) ?: defaultBlockState()
         return updateConnections(state, context.level, context.clickedPos)
     }
@@ -98,6 +108,18 @@ class BasicPipe(properties: Properties) : Block(properties), EntityBlock {
 
         return s
     }
+
+    override fun getOcclusionShape(
+        state: BlockState,
+        level: BlockGetter,
+        pos: BlockPos,
+    ): VoxelShape = CENTER_SHAPE
+        .orIf(NORTH_SHAPE, state.getValue(NORTH))
+        .orIf(EAST_SHAPE, state.getValue(EAST))
+        .orIf(SOUTH_SHAPE, state.getValue(SOUTH))
+        .orIf(WEST_SHAPE, state.getValue(WEST))
+        .orIf(UP_SHAPE, state.getValue(UP))
+        .orIf(DOWN_SHAPE, state.getValue(DOWN))
 
     override fun getShape(
         state: BlockState,

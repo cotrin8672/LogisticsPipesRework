@@ -1,0 +1,61 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "logisticspipesrework:block/pipe/pipe_edge"
+	},
+	"elements": [
+		{
+			"from": [7, 5, 3],
+			"to": [9, 11, 3.8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 3]},
+			"faces": {
+				"north": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"},
+				"east": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [5, 2.5, 6, 5], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [5, 2.5, 6, 5], "rotation": 270, "texture": "#1"}
+			}
+		},
+		{
+			"from": [7, 12.2, 5],
+			"to": [9, 13, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
+			"faces": {
+				"north": {"uv": [5, 2.5, 6, 5], "rotation": 90, "texture": "#1"},
+				"east": {"uv": [1.2, 7.5, 8.7, 8.5], "texture": "#1"},
+				"south": {"uv": [5, 2.5, 6, 5], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 180, "texture": "#1"},
+				"up": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"from": [7, 5, 12.2],
+			"to": [9, 11, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 13]},
+			"faces": {
+				"north": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"},
+				"east": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [5, 2.5, 6, 5], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [5, 2.5, 6, 5], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"from": [7, 3, 5],
+			"to": [9, 3.8, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 3, 8]},
+			"faces": {
+				"north": {"uv": [5, 2.5, 6, 5], "rotation": 270, "texture": "#1"},
+				"east": {"uv": [1.2, 7.5, 8.7, 8.5], "texture": "#1"},
+				"south": {"uv": [5, 2.5, 6, 5], "rotation": 270, "texture": "#1"},
+				"west": {"uv": [1.2, 7.5, 8.7, 8.5], "rotation": 180, "texture": "#1"},
+				"up": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [1.25, 5, 8.75, 7.5], "rotation": 90, "texture": "#1"}
+			}
+		}
+	]
+}

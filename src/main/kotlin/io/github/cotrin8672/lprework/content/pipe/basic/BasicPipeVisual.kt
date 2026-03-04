@@ -28,13 +28,8 @@ class BasicPipeVisual(
     private val instanceList = mutableListOf<OrientedInstance>()
 
     init {
-        val nslist = arrayListOf(Direction.NORTH, Direction.SOUTH)
-        val ewlist = arrayListOf(Direction.EAST, Direction.WEST)
-        val udlist = arrayListOf(Direction.UP, Direction.DOWN)
-
-        for (ns in nslist) for (ew in ewlist) for (ud in udlist) {
-            // if (ns != Direction.NORTH || ew != Direction.EAST || ud != Direction.UP) continue
-            val instance = createCornerInstance(ns, ew, ud)
+        for (corner in Corner.entries) {
+            val instance = createCornerInstance(corner)
             instance.setChanged()
             instanceList.add(instance)
         }
@@ -78,16 +73,29 @@ class BasicPipeVisual(
 
         fun mask(state: BlockState): Int {
             var m = 0
-            if (state.getValue(BasicPipe.getPropByDirection(ns))) m = m or 1 // bit0
-            if (state.getValue(BasicPipe.getPropByDirection(ew))) m = m or 2 // bit1
-            if (state.getValue(BasicPipe.getPropByDirection(ud))) m = m or 4 // bit2
+            if (state.getValue(BasicPipe.getPropByDirection(ns))) m = m or 1 // bit0: ns
+            if (state.getValue(BasicPipe.getPropByDirection(ew))) m = m or 2 // bit1: ew
+            if (state.getValue(BasicPipe.getPropByDirection(ud))) m = m or 4 // bit2: ud
             return m
         }
 
         fun count(state: BlockState) = Integer.bitCount(mask(state))
+
+        fun baseRotY(): Float = when {
+            ns == Direction.SOUTH && ew == Direction.EAST -> 90f
+            ns == Direction.SOUTH && ew == Direction.WEST -> 180f
+            ns == Direction.NORTH && ew == Direction.WEST -> 270f
+            else -> 0f
+        } - if (ud == Direction.DOWN) 90f else 0f
+
+        fun baseRotX(): Float = if (ud == Direction.UP) 0f else 180f
     }
 
-    private fun createCornerInstance(ns: Direction, ew: Direction, ud: Direction): OrientedInstance {
+    private fun createCornerInstance(corner: Corner): OrientedInstance {
+        val ns = corner.ns
+        val ew = corner.ew
+        val ud = corner.ud
+
         val cns = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ns))
         val cew = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ew))
         val cud = blockEntity.blockState.getValue(BasicPipe.getPropByDirection(ud))
@@ -100,92 +108,51 @@ class BasicPipeVisual(
             3 -> instancer3.createInstance()
             else -> throw IllegalStateException("cannot create instance of $count")
         }
-        val rotY = when {
-            ns == Direction.SOUTH && ew == Direction.EAST -> 90f
-            ns == Direction.SOUTH && ew == Direction.WEST -> 180f
-            ns == Direction.NORTH && ew == Direction.WEST -> 270f
-            else -> 0f
-        } - if (ud == Direction.DOWN) 90f else 0f
-        val rotX = if (ud == Direction.UP) 0f else 180f
+        val rotY = corner.baseRotY()
+        val rotX = corner.baseRotX()
 
         instance.position(visualPosition)
 
         if (count == 1) {
-            if (cud) {
-                if (ud == Direction.UP) {
-                    if (ns == Direction.NORTH) {
-                        if (ew == Direction.EAST) {
-                            instance.rotateDegrees(-90f, Direction.Axis.X)
-                            instance.translatePosition(0f, 0.5f, 0f)
-                        } else {
-                            instance.rotateDegrees(90f, Direction.Axis.Z)
-                            instance.translatePosition(0f, 0.5f, 0f)
-                        }
-                    } else if (ns == Direction.SOUTH) {
-                        if (ew == Direction.EAST) {
-                            instance.rotateDegrees(-90f, Direction.Axis.Z)
-                            instance.translatePosition(0f, 0.5f, 0f)
-                        } else {
-                            instance.rotateDegrees(90f, Direction.Axis.X)
-                            instance.translatePosition(0f, 0.5f, 0f)
-                        }
-                    }
-                } else {
-                    if (ns == Direction.NORTH) {
-                        if (ew == Direction.EAST) {
-                            instance.rotateDegrees(90f, Direction.Axis.Z)
-                            instance.translatePosition(0f, -0.5f, 0f)
-                        } else {
-                            instance.rotateDegrees(90f, Direction.Axis.X)
-                            instance.translatePosition(0f, -0.5f, 0f)
-                        }
-                    } else if (ns == Direction.SOUTH) {
-                        if (ew == Direction.EAST) {
-                            instance.rotateDegrees(-90f, Direction.Axis.X)
-                            instance.translatePosition(0f, -0.5f, 0f)
-                        } else {
-                            instance.rotateDegrees(-90f, Direction.Axis.Z)
-                            instance.translatePosition(0f, -0.5f, 0f)
-                        }
-                    }
-                }
-            } else if (cns) {
-                if (ns == Direction.NORTH) {
-                    if (ew == Direction.EAST && ud == Direction.DOWN) {
-                        instance.rotateDegrees(-90f, Direction.Axis.Y)
-                        instance.translatePosition(0f, 0f, -0.5f)
-                    } else if (ew == Direction.WEST && ud == Direction.UP) {
-                        instance.rotateDegrees(90f, Direction.Axis.Y)
-                        instance.translatePosition(0f, 0f, -0.5f)
-                    }
+            val nsBool = ns == Direction.NORTH
+            val ewBool = ew == Direction.EAST
+            val udBool = ud == Direction.UP
 
-                } else {
-                    if (ew == Direction.EAST && ud == Direction.UP) {
-                        instance.rotateDegrees(90f, Direction.Axis.Y)
-                        instance.translatePosition(0f, 0f, 0.5f)
-                    } else if (ew == Direction.WEST && ud == Direction.DOWN) {
-                        instance.rotateDegrees(-90f, Direction.Axis.Y)
-                        instance.translatePosition(0f, 0f, 0.5f)
-                    }
+            val nsSign = if (ns == Direction.NORTH) 1 else -1
+            val ewSign = if (ew == Direction.EAST) 1 else -1
+            val udSign = if (ud == Direction.UP) 1 else -1
+
+            if (cud) {
+                val axis = if (nsBool xor ewBool xor udBool) Direction.Axis.X else Direction.Axis.Z
+                instance.translatePosition(0f, udSign * 0.5f, 0f)
+
+                val angle = if (udBool) -ewSign else nsSign
+                instance.rotateDegrees(angle * 90f, axis)
+
+            } else if (cns) {
+                if ((ewBool xor udBool) == nsBool) {
+                    val angle = -ewSign * nsSign
+                    instance.rotateDegrees(angle * 90f, Direction.Axis.Y)
+                    instance.translatePosition(0f, 0f, -nsSign * 0.5f)
                 }
             } else if (cew) {
-                if (ew == Direction.EAST) {
-                    if (ns == Direction.NORTH && ud == Direction.UP) {
-                        instance.rotateDegrees(90f, Direction.Axis.Y)
-                        instance.translatePosition(0.5f, 0f, 0f)
-                    } else if (ns == Direction.SOUTH && ud == Direction.DOWN) {
-                        instance.rotateDegrees(-90f, Direction.Axis.Y)
-                        instance.translatePosition(0.5f, 0f, 0f)
-                    }
-                } else {
-                    if (ns == Direction.NORTH && ud == Direction.DOWN) {
-                        instance.rotateDegrees(-90f, Direction.Axis.Y)
-                        instance.translatePosition(-0.5f, 0f, 0f)
-                    } else if (ns == Direction.SOUTH && ud == Direction.UP) {
-                        instance.rotateDegrees(90f, Direction.Axis.Y)
-                        instance.translatePosition(-0.5f, 0f, 0f)
-                    }
+                if ((nsBool xor udBool) != ewBool) {
+                    val angle = ewSign * nsSign
+                    instance.rotateDegrees(angle * 90f, Direction.Axis.Y)
+                    instance.translatePosition(ewSign * 0.5f, 0f, 0f)
                 }
+            }
+        } else if (count == 2) {
+            val nsSign = if (ns == Direction.NORTH) 1 else -1
+            val ewSign = if (ew == Direction.EAST) 1 else -1
+            val udSign = if (ud == Direction.UP) 1 else -1
+
+            if (cud && cns) {
+                instance.rotateDegrees(-ewSign * udSign * 90f, Direction.Axis.Z)
+                instance.rotateDegrees(nsSign * ewSign * 90f, Direction.Axis.Y)
+            } else if (cud && cew) {
+                instance.rotateDegrees(-nsSign * udSign * 90f, Direction.Axis.X)
+                instance.rotateDegrees(-nsSign * ewSign * 90f, Direction.Axis.Y)
             }
         }
 
